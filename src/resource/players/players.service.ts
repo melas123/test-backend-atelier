@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
+import { Player } from './entities/player.entity';
 
 @Injectable()
 export class PlayersService {
@@ -9,7 +11,9 @@ export class PlayersService {
   }
 
   findAll() {
-    return `This action returns all players`;
+    return Player.query(
+      `Select * from player order by JSON_EXTRACT(data, '$.rank')`,
+    );
   }
 
   findOne(id: number) {

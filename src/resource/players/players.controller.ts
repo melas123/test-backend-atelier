@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { PlayersService } from './players.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
+import { PlayersService } from './players.service';
 
 @Controller('players')
 export class PlayersController {
@@ -13,6 +22,7 @@ export class PlayersController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get list of players ordered by rank' })
   findAll() {
     return this.playersService.findAll();
   }
