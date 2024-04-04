@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
@@ -16,8 +16,12 @@ export class PlayersService {
     );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} player`;
+  async findOne(id: number) {
+    const player = await Player.findOneBy({ id });
+    if (!player) {
+      throw new NotFoundException('Player not found.');
+    }
+    return player;
   }
 
   update(id: number, updatePlayerDto: UpdatePlayerDto) {
