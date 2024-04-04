@@ -6,12 +6,16 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PlayersService } from './players.service';
+import { FindOneParams } from './validators/findOne.validator';
 
+@UseFilters(HttpExceptionFilter)
 @Controller('players')
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
@@ -28,8 +32,17 @@ export class PlayersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.playersService.findOne(+id);
+  @ApiParam({ name: 'id' })
+  @ApiOperation({ summary: 'Get a player by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Ok.',
+  })
+  @ApiResponse({ status: 404, description: 'Player not found.' })
+  @ApiResponse({ status: 400, description: 'Validation error.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  findOne(@Param() params: FindOneParams) {
+    return this.playersService.findOne(+params.id);
   }
 
   @Patch(':id')
