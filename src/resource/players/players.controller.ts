@@ -5,7 +5,7 @@ import { PlayersService } from './players.service';
 import { FindOneParams } from './validators/findOne.validator';
 
 @UseFilters(HttpExceptionFilter)
-@Controller('players')
+@Controller()
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 
