@@ -15,14 +15,10 @@ describe('PlayersService', () => {
         PlayersService,
         {
           provide: getRepositoryToken(Player),
-          // define all the methods that you use from the catRepo
-          // give proper return values as expected or mock implementations, your choice
           useValue: {
             query: jest.fn().mockResolvedValue(data),
             find: jest.fn().mockResolvedValue(data),
             findOneBy: jest.fn().mockResolvedValue(data[0]),
-            // as these do not actually use their return values in our sample
-            // we just make sure that their resolve is true to not crash
             delete: jest.fn().mockResolvedValue(true),
           },
         },

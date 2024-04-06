@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
+import { PlayersModule } from './resource/players/players.module';
 
 declare const module: any;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(PlayersModule);
 
   const config = new DocumentBuilder()
     .setTitle('Test Technique L’Atelier - Backend')
