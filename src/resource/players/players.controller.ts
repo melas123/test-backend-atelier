@@ -1,7 +1,8 @@
 import { Controller, Delete, Get, Param, UseFilters } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
+import { HttpExceptionFilter } from '../../http-exception.filter';
 import { PlayersService } from './players.service';
+import { DeleteOneParams } from './validators/deleteOne.validator';
 import { FindOneParams } from './validators/findOne.validator';
 
 @UseFilters(HttpExceptionFilter)
@@ -36,7 +37,9 @@ export class PlayersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.playersService.remove(+id);
+  @ApiParam({ name: 'id' })
+  @ApiOperation({ summary: 'Delete a player by his id' })
+  remove(@Param('id') params: DeleteOneParams) {
+    return this.playersService.remove(+params.id);
   }
 }

@@ -1,28 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Player } from './entities/player.entity';
 
 @Injectable()
 export class PlayersService {
-  findAll() {
-    return Player.query(
+  constructor(
+    @InjectRepository(Player) private readonly playerRepo: Repository<Player>,
+  ) {}
+  findAll(): Promise<Player[]> {
+    return this.playerRepo.query(
       `Select * from player order by JSON_EXTRACT(data, '$.rank')`,
     );
   }
 
-  async findOne(id: number) {
-    const player = await Player.findOneBy({ id });
+  async findOne(id: number): Promise<Player> {
+    const player = await this.playerRepo.findOneBy({ id });
     if (!player) {
       throw new NotFoundException('Player not found.');
     }
     return player;
   }
 
-  remove(id: number) {
-    Player.delete({ id });
+  async remove(id: number): Promise<{ deleted: boolean; message?: string }> {
+    try {
+      await this.playerRepo.delete({ id });
+      return { deleted: true };
+    } catch (err) {
+      return { deleted: false, message: err.message };
+    }
   }
 
   async getStatistics() {
-    const result = await Player.find();
+    const result = await this.playerRepo.find();
 
     return {
       bestCountry: this.bestCountry(result),
