@@ -65,6 +65,7 @@ $ npm run test:cov
   <li>Implements get ordered players</li>
   <li>Implements get player by id</li>
   <li>Implements get statistics</li>
+  <li>Implements delete a player by id</li>
   <li>Add swagger to expose the different endpoints</li>
   <li>Handle http params validation</li>
   <li>Handle http exceptions</li>
